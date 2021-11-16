@@ -12,7 +12,6 @@ import (
 
 // Print SSL certificate information
 func fetchCertificates(host string) ([]*x509.Certificate, error) {
-	//conn, err := tls.Dial("tcp", host+":443", nil)
 	conn, err := tls.DialWithDialer(&net.Dialer{Timeout: 5 * time.Second}, "tcp", host+":443", nil)
 	if err != nil {
 		return nil, err
@@ -35,7 +34,7 @@ func printIssuer(host string) {
 		fmt.Fprintf(os.Stderr, "No certificate found for host: %s", host)
 		return
 	}
-	fmt.Printf("%s\t%v\t%s\n", host, certs[0].NotAfter, certs[0].Issuer.CommonName)
+	fmt.Printf("%s\t%v\t%s\t%s\n", host, certs[0].NotAfter, certs[0].Issuer.CommonName, certs[0].DNSNames)
 }
 
 func removeLastDot(s string) string {
